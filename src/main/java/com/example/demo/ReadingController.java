@@ -1,6 +1,10 @@
 package com.example.demo;
 
 import java.util.List;
+import java.util.Set;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -8,8 +12,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.dao.EmployeeRepository;
+import com.example.demo.dao.TreeRepository;
 import com.example.demo.entity.Employee;
 import com.example.demo.entity.TelPhone;
+import com.example.demo.entity.TreeNode;
 
 @RestController
 public class ReadingController {
@@ -19,7 +25,8 @@ public class ReadingController {
 	 private ReadingListRepository readingListRepository; 
 	 @Autowired
 	 private EmployeeRepository employeeRepository;
-
+	 @Autowired
+	 private TreeRepository treeRepository;
 	 
 	 @RequestMapping("/q1")
 	 public List<Book> q1(String reader) {
@@ -30,8 +37,21 @@ public class ReadingController {
 	 @RequestMapping("/q2")
 	 public Book q2(String reader) {
 		 Book bb=  this.readingListRepository.findXxx(reader);
+		 if (bb==null){
+			 return null;
+		 }
 	        return bb;
+	 }
+	 
+	 @RequestMapping("/qtree")
+	 public TreeNode qtree(HttpServletRequest request, HttpServletResponse response,String id) {
+		 response.addHeader("Access-Control-Allow-Origin", "*");
+		 TreeNode td = this.treeRepository.findById(id);
+		 Set<TreeNode> lt = this.treeRepository.findByPid(id);
+		 td.setChildren(lt);
+		 return td;
 	 }	 
+	 
 	 @RequestMapping("/q3")
 	 public Employee q3() {
 		 Employee em1 = new Employee();
@@ -58,7 +78,7 @@ public class ReadingController {
 	        return book;
 	 }
 	 @RequestMapping("/delete")
-	 public Book save(Long id) {
+	 public Book delete(Long id) {
 		    
 		     Book book = readingListRepository.findOne(id);
 		     readingListRepository.delete(book);
