@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.dao.EmployeeRepository;
@@ -43,8 +45,8 @@ public class ReadingController {
 	        return bb;
 	 }
 	 
-	 @RequestMapping("/qtree")
-	 public TreeNode qtree(HttpServletRequest request, HttpServletResponse response,String id) {
+	 @RequestMapping(value="/qtree")
+	 public TreeNode qtree(HttpServletRequest request, HttpServletResponse response, String id) {
 		 response.addHeader("Access-Control-Allow-Origin", "*");
 		 TreeNode td = this.treeRepository.findById(id);
 		 Set<TreeNode> lt = this.treeRepository.findByPid(id);
