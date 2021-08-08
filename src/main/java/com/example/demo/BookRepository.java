@@ -16,9 +16,7 @@ public class BookRepository  {
 
 
 	public BookRepository() {
-		super();
-		
-		
+		super();	
 	}
 
 
